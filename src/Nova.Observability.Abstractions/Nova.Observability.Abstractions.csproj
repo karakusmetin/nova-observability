@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
+
+		<AssemblyName>Nova.Observability.Abstractions</AssemblyName>
+		<RootNamespace>Nova.Observability.Abstractions</RootNamespace>
+
+		<Description>
+			Public contracts, attributes and semantic definitions for Nova Observability.
+		</Description>
+	</PropertyGroup>
+
+</Project>

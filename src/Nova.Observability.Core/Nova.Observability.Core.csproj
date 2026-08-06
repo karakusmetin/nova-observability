@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
+
+		<AssemblyName>Nova.Observability.Core</AssemblyName>
+		<RootNamespace>Nova.Observability.Core</RootNamespace>
+
+		<Description>
+			Backend-independent tracing, metrics and operation primitives.
+		</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference
+		  Include="..\Nova.Observability.Abstractions\Nova.Observability.Abstractions.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Diagnostics.DiagnosticSource" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,25 @@
+<Project>
+
+  <PropertyGroup>
+    <Company>Nova</Company>
+    <Authors>Nova</Authors>
+    <Product>Nova Observability</Product>
+
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+
+    <LangVersion>10.0</LangVersion>
+
+    <Deterministic>true</Deterministic>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <!-- Yalnızca .NET 10'a özel uygulama ve araçlarda kullanılabilir. -->
+  <PropertyGroup Condition="'$(NovaUseLatestLanguage)' == 'true'">
+    <LangVersion>14.0</LangVersion>
+  </PropertyGroup>
+
+</Project>

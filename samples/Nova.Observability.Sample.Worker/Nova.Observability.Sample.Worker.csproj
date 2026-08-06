@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<NovaUseLatestLanguage>true</NovaUseLatestLanguage>
+
+		<AssemblyName>Nova.Observability.Sample.Worker</AssemblyName>
+		<RootNamespace>Nova.Observability.Sample.Worker</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference
+		  Include="..\..\src\Nova.Observability.Hosting\Nova.Observability.Hosting.csproj" />
+
+		<ProjectReference
+		  Include="..\..\src\Nova.Observability.Core\Nova.Observability.Core.csproj" />
+	</ItemGroup>
+
+</Project>
