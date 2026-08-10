@@ -34,10 +34,17 @@ builder.Services.AddNovaObservability(
          * OTLP'yi açacağız.
          */
         options.EnableConsoleExporter =
-            true;
+    false;
 
         options.EnableOtlpExporter =
-            false;
+            true;
+
+        options.OtlpEndpoint =
+            new Uri(
+                "http://localhost:4317");
+
+        options.OtlpProtocol =
+            NovaOtlpProtocol.Grpc;
 
         /*
          * Demo sırasında bütün trace'leri görmek
