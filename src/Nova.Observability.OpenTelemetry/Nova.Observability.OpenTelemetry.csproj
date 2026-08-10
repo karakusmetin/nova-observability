@@ -12,18 +12,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference
-		  Include="..\Nova.Observability.Abstractions\Nova.Observability.Abstractions.csproj" />
+		<ProjectReference Include="..\Nova.Observability.Abstractions\Nova.Observability.Abstractions.csproj" />
 
-		<ProjectReference
-		  Include="..\Nova.Observability.Core\Nova.Observability.Core.csproj" />
+		<ProjectReference Include="..\Nova.Observability.Core\Nova.Observability.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="OpenTelemetry" />
+		
+		<PackageReference Include="OpenTelemetry.Exporter.Console" />
 
-		<PackageReference
-		  Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />
+		<PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />
 	</ItemGroup>
 
 </Project>
