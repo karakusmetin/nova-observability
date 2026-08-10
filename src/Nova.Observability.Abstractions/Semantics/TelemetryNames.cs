@@ -22,4 +22,13 @@ public static class TelemetryNames
 
     public const string OperationDurationMetricName =
         "nova.operation.duration";
+
+    public const string ServiceAliveMetricName =
+    "nova.service.alive";
+
+    public const string ServiceUptimeMetricName =
+        "nova.service.uptime";
+
+    public const string ServiceHeartbeatTimestampMetricName =
+        "nova.service.heartbeat.timestamp";
 }
