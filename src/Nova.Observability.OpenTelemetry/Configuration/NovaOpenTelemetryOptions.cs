@@ -87,4 +87,22 @@ public sealed class NovaOpenTelemetryOptions
     /// Bu callback içinden tekrar Nova çağrısı yapılmamalıdır.
     /// </summary>
     public Action<string, Exception?>? DiagnosticHandler { get; set; }
+
+    public bool IncludeFormattedLogMessage { get; set; } =
+    true;
+
+    public bool IncludeLogScopes { get; set; } =
+        true;
+
+    public bool ParseLogStateValues { get; set; } =
+        false;
+
+    public int LogMaxQueueSize { get; set; } =
+        2_048;
+
+    public int LogMaxExportBatchSize { get; set; } =
+        512;
+
+    public int LogScheduledDelayMilliseconds { get; set; } =
+        5_000;
 }

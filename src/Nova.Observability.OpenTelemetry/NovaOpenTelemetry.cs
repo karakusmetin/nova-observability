@@ -36,6 +36,16 @@ public static class NovaOpenTelemetry
                 options,
                 validationException);
         }
+        
+        if (!NovaOpenTelemetryOptionsValidator.TryValidate(
+        options,
+        out var validationError))
+        {
+            return HandleInitializationFailure(
+                options,
+                new InvalidOperationException(
+                    validationError));
+        }
 
         TracerProvider? tracerProvider = null;
         MeterProvider? meterProvider = null;
@@ -46,14 +56,18 @@ public static class NovaOpenTelemetry
                 CreateResourceBuilder(options);
 
             tracerProvider =
-                CreateTracerProvider(
-                    options,
-                    resourceBuilder);
+                NovaOpenTelemetryPipeline
+                    .ConfigureTracing(
+                        Sdk.CreateTracerProviderBuilder(),
+                        options)
+                    .Build();
 
             meterProvider =
-                CreateMeterProvider(
-                    options,
-                    resourceBuilder);
+                NovaOpenTelemetryPipeline
+                    .ConfigureMetrics(
+                        Sdk.CreateMeterProviderBuilder(),
+                        options)
+                    .Build();
 
             NovaOpenTelemetryDiagnostics.Report(
                 options,
@@ -82,124 +96,6 @@ public static class NovaOpenTelemetry
                 exception);
         }
     }
-
-    private static TracerProvider CreateTracerProvider(
-        NovaOpenTelemetryOptions options,
-        ResourceBuilder resourceBuilder)
-    {
-        var builder =
-            Sdk.CreateTracerProviderBuilder()
-                .SetResourceBuilder(resourceBuilder)
-                .SetSampler(CreateSampler(
-                    options.TraceSamplingRatio))
-                .AddSource(
-                    TelemetryNames.InstrumentationName);
-
-        if (options.EnableConsoleExporter)
-        {
-            builder.AddConsoleExporter();
-        }
-
-        if (options.EnableOtlpExporter)
-        {
-            var traceEndpoint =
-                ResolveSignalEndpoint(
-                    options,
-                    "traces");
-
-            builder.AddOtlpExporter(exporterOptions =>
-            {
-                ConfigureCommonExporter(
-                    exporterOptions,
-                    options,
-                    traceEndpoint);
-
-                exporterOptions.ExportProcessorType =
-                    ExportProcessorType.Batch;
-
-                exporterOptions
-                    .BatchExportProcessorOptions
-                    .MaxQueueSize =
-                        options.TraceMaxQueueSize;
-
-                exporterOptions
-                    .BatchExportProcessorOptions
-                    .MaxExportBatchSize =
-                        options.TraceMaxExportBatchSize;
-
-                exporterOptions
-                    .BatchExportProcessorOptions
-                    .ScheduledDelayMilliseconds =
-                        options.TraceScheduledDelayMilliseconds;
-
-                exporterOptions
-                    .BatchExportProcessorOptions
-                    .ExporterTimeoutMilliseconds =
-                        options.ExporterTimeoutMilliseconds;
-            });
-        }
-
-        return builder.Build();
-    }
-
-    private static MeterProvider CreateMeterProvider(
-        NovaOpenTelemetryOptions options,
-        ResourceBuilder resourceBuilder)
-    {
-        var builder =
-            Sdk.CreateMeterProviderBuilder()
-                .SetResourceBuilder(resourceBuilder)
-                .AddMeter(
-                    TelemetryNames.InstrumentationName);
-
-        if (options.EnableConsoleExporter)
-        {
-            builder.AddConsoleExporter((_, readerOptions) =>
-                {
-                    readerOptions
-                        .PeriodicExportingMetricReaderOptions
-                        .ExportIntervalMilliseconds =
-                            options.MetricExportIntervalMilliseconds;
-
-                    readerOptions
-                        .PeriodicExportingMetricReaderOptions
-                        .ExportTimeoutMilliseconds =
-                            options.MetricExportTimeoutMilliseconds;
-                });
-        }
-
-        if (options.EnableOtlpExporter)
-        {
-            var metricEndpoint =
-                ResolveSignalEndpoint(
-                    options,
-                    "metrics");
-
-            builder.AddOtlpExporter(
-                (exporterOptions, readerOptions) =>
-                {
-                    ConfigureCommonExporter(
-                        exporterOptions,
-                        options,
-                        metricEndpoint);
-
-                    readerOptions
-                        .PeriodicExportingMetricReaderOptions
-                        .ExportIntervalMilliseconds =
-                            options
-                                .MetricExportIntervalMilliseconds;
-
-                    readerOptions
-                        .PeriodicExportingMetricReaderOptions
-                        .ExportTimeoutMilliseconds =
-                            options
-                                .MetricExportTimeoutMilliseconds;
-                });
-        }
-
-        return builder.Build();
-    }
-
     private static ResourceBuilder CreateResourceBuilder(
         NovaOpenTelemetryOptions options)
     {
