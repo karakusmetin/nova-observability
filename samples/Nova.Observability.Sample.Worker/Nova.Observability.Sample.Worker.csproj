@@ -9,11 +9,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference
-		  Include="..\..\src\Nova.Observability.Hosting\Nova.Observability.Hosting.csproj" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting" />
+	</ItemGroup>
 
-		<ProjectReference
-		  Include="..\..\src\Nova.Observability.Core\Nova.Observability.Core.csproj" />
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\Nova.Observability.Abstractions\Nova.Observability.Abstractions.csproj" />
+
+		<ProjectReference Include="..\..\src\Nova.Observability.Core\Nova.Observability.Core.csproj" />
+
+		<ProjectReference Include="..\..\src\Nova.Observability.OpenTelemetry\Nova.Observability.OpenTelemetry.csproj" />
+
+		<ProjectReference Include="..\..\src\Nova.Observability.Hosting\Nova.Observability.Hosting.csproj" />
 	</ItemGroup>
 
 </Project>
