@@ -17,7 +17,11 @@ internal static class TelemetryTagHelper
             if (string.IsNullOrWhiteSpace(tag.Key))
                 continue;
 
-            activity.SetTag(tag.Key, tag.Value);
+            activity.SetTag(
+            tag.Key,
+            NovaTelemetry.ProtectAttribute(
+                tag.Key,
+                tag.Value));
         }
     }
 
@@ -36,7 +40,10 @@ internal static class TelemetryTagHelper
 
             // Indexer kullanıldığı için aynı anahtar tekrar gelirse
             // son değer geçerli olur.
-            result[tag.Key] = tag.Value;
+            result[tag.Key] =
+            NovaTelemetry.ProtectAttribute(
+                tag.Key,
+                tag.Value);
         }
 
         return result;

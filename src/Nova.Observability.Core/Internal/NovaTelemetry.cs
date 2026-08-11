@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Nova.Observability.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
-using Nova.Observability.Abstractions;
+using System.Threading;
 
 namespace Nova.Observability.Core;
 
@@ -80,6 +81,10 @@ public static class NovaTelemetry
 
     public static string? CurrentSpanId =>
         Activity.Current?.SpanId.ToString();
+
+    private static NovaTelemetrySanitizer _sanitizer =
+    new(
+        new NovaDataProtectionOptions());
 
     public static INovaOperation StartOperation(
         string operationName,
@@ -235,5 +240,48 @@ public static class NovaTelemetry
             operationName,
             options ?? new NovaOperationOptions(),
             parentContext);
+    }
+    public static void ConfigureDataProtection(
+    NovaDataProtectionOptions options)
+    {
+        if (options == null)
+            throw new ArgumentNullException(
+                nameof(options));
+
+        var sanitizer =
+            new NovaTelemetrySanitizer(
+                options);
+
+        Interlocked.Exchange(
+            ref _sanitizer,
+            sanitizer);
+    }
+    internal static object? ProtectAttribute(
+    string key,
+    object? value)
+    {
+        return Volatile
+            .Read(ref _sanitizer)
+            .ProtectAttribute(
+                key,
+                value);
+    }
+
+    internal static string? ProtectExceptionMessage(
+        string? value)
+    {
+        return Volatile
+            .Read(ref _sanitizer)
+            .ProtectExceptionMessage(
+                value);
+    }
+
+    internal static string? ProtectExceptionStackTrace(
+        Exception exception)
+    {
+        return Volatile
+            .Read(ref _sanitizer)
+            .ProtectExceptionStackTrace(
+                exception);
     }
 }

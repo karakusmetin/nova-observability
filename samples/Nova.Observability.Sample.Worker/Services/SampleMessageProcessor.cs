@@ -70,6 +70,11 @@ public sealed class SampleMessageProcessor : ISampleMessageProcessor
         _logger.LogInformation(
             "Mesaj başarıyla işlendi. MessageId={MessageId}",
             messageId);
+        _logger.LogInformation(
+    "Nova security test. Password={Password}, ApiKey={ApiKey}, DocumentId={DocumentId}",
+    "my-real-looking-password",
+    "api-key-123456",
+    200001);
     }
 
     private async Task PersistDocumentAsync(

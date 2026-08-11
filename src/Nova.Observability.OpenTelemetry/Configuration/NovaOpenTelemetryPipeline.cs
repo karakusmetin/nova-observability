@@ -149,6 +149,13 @@ public static class NovaOpenTelemetryPipeline
         logging.SetResourceBuilder(
             CreateResourceBuilder(options));
 
+        if (options.DataProtection.Enabled)
+        {
+            logging.AddProcessor(
+                new NovaLogDataProtectionProcessor(
+                    options.DataProtection));
+        }
+
         if (options.EnableConsoleExporter)
         {
             logging.AddConsoleExporter();

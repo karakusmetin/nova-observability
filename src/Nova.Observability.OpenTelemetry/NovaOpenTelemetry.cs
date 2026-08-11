@@ -1,4 +1,5 @@
-﻿using OpenTelemetry;
+﻿using Nova.Observability.Core;
+using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 using System;
@@ -31,6 +32,8 @@ public static class NovaOpenTelemetry
                 new InvalidOperationException(
                     validationError));
         }
+
+        NovaTelemetry.ConfigureDataProtection(options.DataProtection);
 
         TracerProvider? tracerProvider =
             null;

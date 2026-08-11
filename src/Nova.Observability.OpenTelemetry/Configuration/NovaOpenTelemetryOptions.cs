@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nova.Observability.Abstractions;
+using System;
 using System.Collections.Generic;
 
 namespace Nova.Observability.OpenTelemetry;
@@ -105,4 +106,9 @@ public sealed class NovaOpenTelemetryOptions
 
     public int LogScheduledDelayMilliseconds { get; set; } =
         5_000;
+
+    public NovaDataProtectionOptions DataProtection
+    {
+        get;
+    } = new NovaDataProtectionOptions();
 }

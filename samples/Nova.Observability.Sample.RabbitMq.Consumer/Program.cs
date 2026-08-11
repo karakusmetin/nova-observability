@@ -1,3 +1,4 @@
+using Nova.Observability.Core;
 using Nova.Observability.Hosting;
 using Nova.Observability.OpenTelemetry;
 using Nova.Observability.Sample.RabbitMq.Consumer;
@@ -33,6 +34,8 @@ builder.Services.AddNovaObservability(
 
         options.OtlpProtocol =
             NovaOtlpProtocol.Grpc;
+
+        NovaTelemetry.ConfigureDataProtection(options.DataProtection);
     });
 
 builder.Services

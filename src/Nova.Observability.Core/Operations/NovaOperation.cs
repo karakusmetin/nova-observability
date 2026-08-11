@@ -119,7 +119,11 @@ internal sealed class NovaOperation : INovaOperation
                 nameof(name));
         }
 
-        _activity?.SetTag(name, value);
+        _activity?.SetTag(
+        name,
+        NovaTelemetry.ProtectAttribute(
+            name,
+            value));
     }
 
     public void Step(
@@ -326,15 +330,22 @@ internal sealed class NovaOperation : INovaOperation
         var exceptionTags =
             new ActivityTagsCollection();
 
-        exceptionTags[TelemetryTags.ExceptionType] =
-            exception.GetType().FullName
-            ?? exception.GetType().Name;
+        exceptionTags[
+            TelemetryTags.ExceptionType] =
+                exception.GetType().FullName
+                ?? exception.GetType().Name;
 
-        exceptionTags[TelemetryTags.ExceptionMessage] =
-            exception.Message;
+        exceptionTags[
+            TelemetryTags.ExceptionMessage] =
+                NovaTelemetry
+                    .ProtectExceptionMessage(
+                        exception.Message);
 
-        exceptionTags[TelemetryTags.ExceptionStackTrace] =
-            exception.ToString();
+        exceptionTags[
+            TelemetryTags.ExceptionStackTrace] =
+                NovaTelemetry
+                    .ProtectExceptionStackTrace(
+                        exception);
 
         _activity.AddEvent(
             new ActivityEvent(
