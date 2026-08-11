@@ -15,20 +15,21 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference
-		  Include="..\Nova.Observability.Abstractions\Nova.Observability.Abstractions.csproj" />
+		<ProjectReference Include="..\Nova.Observability.Abstractions\Nova.Observability.Abstractions.csproj" />
 
-		<ProjectReference
-		  Include="..\Nova.Observability.Core\Nova.Observability.Core.csproj" />
+		<ProjectReference Include="..\Nova.Observability.Core\Nova.Observability.Core.csproj" />
 
-		<ProjectReference
-		  Include="..\Nova.Observability.OpenTelemetry\Nova.Observability.OpenTelemetry.csproj" />
+		<ProjectReference Include="..\Nova.Observability.OpenTelemetry\Nova.Observability.OpenTelemetry.csproj" />
+		
+		<ProjectReference Include="..\Nova.Observability.Interception\Nova.Observability.Interception.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference
-		  Include="Microsoft.NETFramework.ReferenceAssemblies"
-		  PrivateAssets="all" />
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" PrivateAssets="all" />
+		
+		<PackageReference Include="Microsoft.Extensions.Logging" />
+
+		<Reference Include="System.Configuration" />
 	</ItemGroup>
 
 </Project>

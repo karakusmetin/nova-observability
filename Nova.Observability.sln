@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nova.Observability.Sample.R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nova.Observability.Sample.RabbitMq.Consumer", "samples\Nova.Observability.Sample.RabbitMq.Consumer\Nova.Observability.Sample.RabbitMq.Consumer.csproj", "{125E1147-E8F3-4B9B-9E83-AE0A9068ABC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nova.Observability.Sample.LegacyConsole", "samples\Nova.Observability.Sample.LegacyConsole\Nova.Observability.Sample.LegacyConsole.csproj", "{040B3E08-EB08-49E2-8E57-2B836D9BF790}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,18 @@ Global
 		{125E1147-E8F3-4B9B-9E83-AE0A9068ABC2}.Release|x64.Build.0 = Release|Any CPU
 		{125E1147-E8F3-4B9B-9E83-AE0A9068ABC2}.Release|x86.ActiveCfg = Release|Any CPU
 		{125E1147-E8F3-4B9B-9E83-AE0A9068ABC2}.Release|x86.Build.0 = Release|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Debug|x64.Build.0 = Debug|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Debug|x86.Build.0 = Debug|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Release|Any CPU.Build.0 = Release|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Release|x64.ActiveCfg = Release|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Release|x64.Build.0 = Release|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Release|x86.ActiveCfg = Release|Any CPU
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -189,6 +203,7 @@ Global
 		{750520FD-745F-D58E-AC7C-B08A48B92075} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{50BB9422-2506-3BCD-4BC0-44022CB7551F} = {5D20AA90-6969-D8BD-9DCD-8634F4692FDA}
 		{125E1147-E8F3-4B9B-9E83-AE0A9068ABC2} = {5D20AA90-6969-D8BD-9DCD-8634F4692FDA}
+		{040B3E08-EB08-49E2-8E57-2B836D9BF790} = {5D20AA90-6969-D8BD-9DCD-8634F4692FDA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E408D2A6-8E83-449C-9495-244FE89418FB}
