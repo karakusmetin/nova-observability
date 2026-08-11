@@ -2,7 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Nova.Observability.OpenTelemetry;
-using OpenTelemetry;
+using Castle.DynamicProxy;
+using Microsoft.Extensions.Logging;
+using Nova.Observability.Interception;
 
 namespace Nova.Observability.Hosting;
 
@@ -63,6 +65,25 @@ public static class HostingExtensions
         }
 
         services.TryAddSingleton(options);
+
+        services.TryAddSingleton(new NovaInterceptionOptions
+        {
+            Enabled = true,
+
+            EnableLogScopes = true,
+
+            LogFailures = true,
+
+            DiagnosticHandler =
+                options.DiagnosticHandler
+        });
+
+        services.TryAddSingleton<
+            IProxyGenerator,
+            ProxyGenerator>();
+
+        services.TryAddSingleton<
+            NovaOperationInterceptor>();
 
         services.TryAddSingleton(
             new NovaObservabilityState(

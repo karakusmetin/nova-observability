@@ -34,6 +34,9 @@
 
 		<PackageReference
 		  Include="OpenTelemetry.Extensions.Hosting" />
+
+		<ProjectReference
+		  Include="..\Nova.Observability.Interception\Nova.Observability.Interception.csproj" />
 	</ItemGroup>
 
 </Project>

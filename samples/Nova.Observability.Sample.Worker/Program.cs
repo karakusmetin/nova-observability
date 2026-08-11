@@ -75,8 +75,10 @@ builder.Services.AddNovaObservability(
             };
     });
 
-builder.Services.AddSingleton<
-    SampleMessageProcessor>();
+builder.Services
+    .AddNovaObservedSingleton<
+        ISampleMessageProcessor,
+        SampleMessageProcessor>();
 
 builder.Services.AddHostedService<
     Worker>();

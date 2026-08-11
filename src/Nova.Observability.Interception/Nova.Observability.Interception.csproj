@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
+
+		<AssemblyName>Nova.Observability.Interception</AssemblyName>
+		<RootNamespace>Nova.Observability.Interception</RootNamespace>
+
+		<Description>
+			Attribute-based method interception for Nova Observability.
+		</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Nova.Observability.Abstractions\Nova.Observability.Abstractions.csproj" />
+
+		<ProjectReference Include="..\Nova.Observability.Core\Nova.Observability.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Castle.Core" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+	</ItemGroup>
+
+</Project>

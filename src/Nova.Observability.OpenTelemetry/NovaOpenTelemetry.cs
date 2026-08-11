@@ -1,20 +1,12 @@
-﻿using Nova.Observability.Abstractions;
-using OpenTelemetry;
-using OpenTelemetry.Exporter;
+﻿using OpenTelemetry;
 using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Diagnostics.Metrics;
 
 namespace Nova.Observability.OpenTelemetry;
 
 public static class NovaOpenTelemetry
 {
-    private const string DeploymentEnvironmentName =
-        "deployment.environment.name";
 
     public static NovaOpenTelemetryRuntime Start(
         NovaOpenTelemetryOptions options)
@@ -22,7 +14,7 @@ public static class NovaOpenTelemetry
         if (options == null)
             throw new ArgumentNullException(
                 nameof(options));
-
+        
         if (!options.Enabled)
         {
             return CreateDisabledRuntime(

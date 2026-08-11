@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Nova.Observability.Sample.Worker.Services;
 
-public sealed class SampleMessageProcessor
+public sealed class SampleMessageProcessor : ISampleMessageProcessor
 {
     private readonly ILogger<SampleMessageProcessor>
         _logger;
@@ -20,119 +20,56 @@ public sealed class SampleMessageProcessor
             logger;
     }
 
+    [ObserveOperation(
+        "sample.message.process",
+        DisplayName = "Sample mesaj işleme",
+        Kind = OperationKind.Consumer,
+        Domain = "Sample",
+        Action = "Process",
+        EntityType = "SampleMessage",
+        EntityIdParameter = "messageId")]
     public async Task ProcessAsync(
         long messageId,
         bool simulateFailure,
         CancellationToken cancellationToken)
     {
-        using var operation =
-            NovaTelemetry.StartOperation(
-                "sample.message.process",
-                new NovaOperationOptions
-                {
-                    DisplayName =
-                        "Sample mesaj işleme",
+        _logger.LogInformation(
+            "Mesaj işleme başladı. MessageId={MessageId}",
+            messageId);
 
-                    Kind =
-                        OperationKind.Consumer,
+        NovaTelemetry.AddStep(
+            "message.received",
+            "Mesaj Worker tarafından işleme alındı.");
 
-                    Domain =
-                        "Sample",
+        await Task.Delay(
+            250,
+            cancellationToken);
 
-                    Action =
-                        "Process",
+        NovaTelemetry.AddStep(
+            "message.validated",
+            "Mesaj doğrulandı.");
 
-                    EntityType =
-                        "SampleMessage",
+        _logger.LogInformation(
+            "Mesaj doğrulandı. MessageId={MessageId}",
+            messageId);
 
-                    EntityId =
-                        messageId.ToString()
-                });
+        await PersistDocumentAsync(
+            messageId,
+            cancellationToken);
 
-        /*
-         * ILogger loglarına EntityId ve
-         * CorrelationId bilgisini de taşıyoruz.
-         *
-         * OpenTelemetry IncludeScopes=true olduğu
-         * için bu alanlar exported log üzerinde
-         * structured attribute olarak görülebilecek.
-         */
-        using var logScope =
-            _logger.BeginScope(
-                new Dictionary<string, object?>
-                {
-                    [TelemetryTags.EntityType] =
-                        "SampleMessage",
-
-                    [TelemetryTags.EntityId] =
-                        messageId,
-
-                    [TelemetryTags.CorrelationId] =
-                        operation.CorrelationId
-                });
-
-        try
+        if (simulateFailure)
         {
-            _logger.LogInformation(
-                "Mesaj işleme başladı. MessageId={MessageId}",
-                messageId);
-
-            operation.Step(
-                "message.received",
-                "Mesaj Worker tarafından işleme alındı.");
-
-            await Task.Delay(
-                250,
-                cancellationToken);
-
-            operation.Step(
-                "message.validated",
-                "Mesaj doğrulandı.");
-
-            _logger.LogInformation(
-                "Mesaj doğrulandı. MessageId={MessageId}",
-                messageId);
-
-            await PersistDocumentAsync(
-                messageId,
-                cancellationToken);
-
-            if (simulateFailure)
-            {
-                throw new InvalidOperationException(
-                    "Sample amaçlı oluşturulan business işlem hatası.");
-            }
-
-            operation.Step(
-                "message.completed",
-                "Mesaj başarıyla işlendi.");
-
-            _logger.LogInformation(
-                "Mesaj başarıyla işlendi. MessageId={MessageId}",
-                messageId);
-
-            operation.Complete();
+            throw new InvalidOperationException(
+                "Sample amaçlı oluşturulan business işlem hatası.");
         }
-        catch (OperationCanceledException)
-            when (cancellationToken.IsCancellationRequested)
-        {
-            operation.Cancel(
-                "Worker cancellation requested.");
 
-            throw;
-        }
-        catch (Exception exception)
-        {
-            _logger.LogError(
-                exception,
-                "Mesaj işlenirken hata oluştu. MessageId={MessageId}",
-                messageId);
+        NovaTelemetry.AddStep(
+            "message.completed",
+            "Mesaj başarıyla işlendi.");
 
-            operation.Fail(
-                exception);
-
-            throw;
-        }
+        _logger.LogInformation(
+            "Mesaj başarıyla işlendi. MessageId={MessageId}",
+            messageId);
     }
 
     private async Task PersistDocumentAsync(

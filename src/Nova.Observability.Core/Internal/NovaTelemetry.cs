@@ -172,4 +172,50 @@ public static class NovaTelemetry
             return 0;
         }
     }
+    public static void AddStep(
+    string stepName,
+    string? displayMessage = null,
+    IEnumerable<KeyValuePair<string, object?>>? tags = null)
+    {
+        if (string.IsNullOrWhiteSpace(
+                stepName))
+        {
+            throw new ArgumentException(
+                "Step name cannot be empty.",
+                nameof(stepName));
+        }
+
+        var activity = Activity.Current;
+
+        if (activity == null)
+            return;
+
+        var eventTags =
+            TelemetryTagHelper
+                .CreateActivityTags(
+                    tags);
+
+        eventTags[
+            TelemetryTags.EventName] =
+                TelemetryNames
+                    .OperationStepEventName;
+
+        eventTags[
+            TelemetryTags.OperationStepName] =
+                stepName;
+
+        if (!string.IsNullOrWhiteSpace(
+                displayMessage))
+        {
+            eventTags[
+                TelemetryTags.DisplayMessage] =
+                    displayMessage;
+        }
+
+        activity.AddEvent(
+            new ActivityEvent(
+                TelemetryNames.OperationStepEventName,
+                default(DateTimeOffset),
+                eventTags));
+    }
 }

@@ -12,15 +12,16 @@ public sealed class Worker : BackgroundService
 {
     private readonly ILogger<Worker> _logger;
 
-    private readonly SampleMessageProcessor
-        _messageProcessor;
+
+    private readonly ISampleMessageProcessor
+    _messageProcessor;
 
     private readonly NovaObservabilityState
         _observabilityState;
 
     public Worker(
         ILogger<Worker> logger,
-        SampleMessageProcessor messageProcessor,
+        ISampleMessageProcessor messageProcessor,
         NovaObservabilityState observabilityState)
     {
         _logger =
