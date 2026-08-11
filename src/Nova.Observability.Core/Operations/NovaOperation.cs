@@ -20,7 +20,8 @@ internal sealed class NovaOperation : INovaOperation
 
     internal NovaOperation(
         string operationName,
-        NovaOperationOptions options)
+        NovaOperationOptions options,
+        ActivityContext? explicitParentContext = null)
     {
         _operationName = operationName;
         _options = options;
@@ -31,9 +32,21 @@ internal sealed class NovaOperation : INovaOperation
 
         var parentActivity = Activity.Current;
 
-        _activity = NovaTelemetry.ActivitySource.StartActivity(
-            operationName,
-            MapActivityKind(options.Kind));
+        if (explicitParentContext.HasValue)
+        {
+            _activity =
+                NovaTelemetry.ActivitySource.StartActivity(
+                    operationName,
+                    MapActivityKind(options.Kind),
+                    explicitParentContext.Value);
+        }
+        else
+        {
+            _activity =
+                NovaTelemetry.ActivitySource.StartActivity(
+                    operationName,
+                    MapActivityKind(options.Kind));
+        }
 
         if (_activity != null &&
             !string.IsNullOrWhiteSpace(options.DisplayName))
@@ -43,6 +56,7 @@ internal sealed class NovaOperation : INovaOperation
 
         TraceId =
             _activity?.TraceId.ToString()
+            ?? GetTraceId(explicitParentContext)
             ?? parentActivity?.TraceId.ToString();
 
         SpanId =
@@ -448,5 +462,22 @@ internal sealed class NovaOperation : INovaOperation
         return result
             .ToString()
             .ToLowerInvariant();
+    }
+    private static string? GetTraceId(
+    ActivityContext? context)
+    {
+        if (!context.HasValue)
+            return null;
+
+        if (context.Value.TraceId ==
+            default(ActivityTraceId))
+        {
+            return null;
+        }
+
+        return context
+            .Value
+            .TraceId
+            .ToString();
     }
 }

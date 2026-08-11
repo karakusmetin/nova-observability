@@ -42,6 +42,8 @@
 		<ProjectReference Include="..\..\src\Nova.Observability.Core\Nova.Observability.Core.csproj" />
 		
 		<ProjectReference Include="..\..\src\Nova.Observability.Interception\Nova.Observability.Interception.csproj" />
+
+		<ProjectReference Include="..\..\src\Nova.Observability.Messaging\Nova.Observability.Messaging.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Using Include="Xunit" />

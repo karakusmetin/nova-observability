@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Nova.Observability.Sample.RabbitMq.Publisher-197c7be7-1449-48e3-bdc3-58be47f8b36e</UserSecretsId>
+  </PropertyGroup>
+
+	<ItemGroup>
+
+		<ProjectReference Include="..\..\src\Nova.Observability.Abstractions\Nova.Observability.Abstractions.csproj" />
+
+		<ProjectReference Include="..\..\src\Nova.Observability.Core\Nova.Observability.Core.csproj" />
+
+		<ProjectReference Include="..\..\src\Nova.Observability.Hosting\Nova.Observability.Hosting.csproj" />
+
+		<ProjectReference Include="..\..\src\Nova.Observability.Messaging\Nova.Observability.Messaging.csproj" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" />
+		<PackageReference Include="RabbitMQ.Client" />
+	</ItemGroup>
+</Project>

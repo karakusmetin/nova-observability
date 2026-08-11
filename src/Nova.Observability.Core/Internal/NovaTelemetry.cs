@@ -218,4 +218,22 @@ public static class NovaTelemetry
                 default(DateTimeOffset),
                 eventTags));
     }
+    public static INovaOperation StartOperation(
+    string operationName,
+    ActivityContext parentContext,
+    NovaOperationOptions? options = null)
+    {
+        if (string.IsNullOrWhiteSpace(
+                operationName))
+        {
+            throw new ArgumentException(
+                "Operation name cannot be empty.",
+                nameof(operationName));
+        }
+
+        return new NovaOperation(
+            operationName,
+            options ?? new NovaOperationOptions(),
+            parentContext);
+    }
 }
