@@ -20,6 +20,8 @@
 		<ProjectReference Include="..\..\src\Nova.Observability.OpenTelemetry\Nova.Observability.OpenTelemetry.csproj" />
 
 		<ProjectReference Include="..\..\src\Nova.Observability.Hosting\Nova.Observability.Hosting.csproj" />
+		
+		<ProjectReference Include="..\..\src\Nova.Observability.File\Nova.Observability.File.csproj" />
 	</ItemGroup>
 
 </Project>

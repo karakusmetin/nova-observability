@@ -1,10 +1,13 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Nova.Observability.File;
 using Nova.Observability.Hosting;
 using Nova.Observability.OpenTelemetry;
 using Nova.Observability.Sample.Worker;
 using Nova.Observability.Sample.Worker.Services;
 using System;
+using System.IO;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -79,6 +82,19 @@ builder.Services
     .AddNovaObservedSingleton<
         ISampleMessageProcessor,
         SampleMessageProcessor>();
+
+builder.Logging.AddNovaFile(
+    builder.Configuration,
+    "Nova:FileLogging",
+    options =>
+    {
+        options.ServiceName =
+            "Nova.Observability.Sample.Worker";
+
+        options.EnvironmentName =
+            builder.Environment.EnvironmentName;
+    });
+
 
 builder.Services.AddHostedService<
     Worker>();

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;net10.0</TargetFrameworks>
+
+		<AssemblyName>Nova.Observability.File</AssemblyName>
+		<RootNamespace>Nova.Observability.File</RootNamespace>
+
+		<Description>
+			Optional resilient structured file logging provider for Nova Observability.
+		</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Nova.Observability.Abstractions\Nova.Observability.Abstractions.csproj" />
+
+		<ProjectReference Include="..\Nova.Observability.Core\Nova.Observability.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+		<PackageReference Include="System.Text.Json" />
+	</ItemGroup>
+
+</Project>
