@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+		<TargetFrameworks>netstandard2.0;net8.0;net9.0;net10.0</TargetFrameworks>
 
 		<AssemblyName>Nova.Observability.Hosting</AssemblyName>
 		<RootNamespace>Nova.Observability.Hosting</RootNamespace>
@@ -37,6 +37,9 @@
 
 		<ProjectReference
 		  Include="..\Nova.Observability.Interception\Nova.Observability.Interception.csproj" />
+
+		<PackageReference
+		  Include="Microsoft.Extensions.Configuration.Binder" />
 	</ItemGroup>
 
 </Project>

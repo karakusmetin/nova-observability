@@ -1,36 +1,36 @@
 using Nova.Observability.Hosting;
-using Nova.Observability.OpenTelemetry;
 using Nova.Observability.Sample.RabbitMq.Publisher;
 
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddNovaObservability(
+    builder.Configuration,
+    "Nova:Observability",
     options =>
     {
-        options.ServiceName =
-            "Nova.Sample.RabbitMq.Publisher";
-
-        options.ServiceNamespace =
-            "Nova";
-
-        options.ServiceVersion =
-            "0.1.0";
+        /*
+         * Makineye özgü runtime değerini
+         * config'e yazmak istemiyoruz.
+         */
+        options.ServiceInstanceId =
+            Environment.MachineName;
 
         options.EnvironmentName =
-            builder.Environment.EnvironmentName;
+            builder.Environment
+                .EnvironmentName;
 
-        options.EnableConsoleExporter =
-            false;
+        options.DiagnosticHandler =
+            (message, exception) =>
+            {
+                Console.Error.WriteLine(
+                    "[Nova] " + message);
 
-        options.EnableOtlpExporter =
-            true;
-
-        options.OtlpEndpoint =
-            new Uri(
-                "http://localhost:4317");
-
-        options.OtlpProtocol =
-            NovaOtlpProtocol.Grpc;
+                if (exception != null)
+                {
+                    Console.Error.WriteLine(
+                        exception);
+                }
+            };
     });
 
 builder.Services.AddHostedService<Worker>();

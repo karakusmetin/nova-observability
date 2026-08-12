@@ -5,26 +5,16 @@ using Nova.Observability.OpenTelemetry;
 using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 using Nova.Observability.Interception;
+using Microsoft.Extensions.Configuration;
 
 namespace Nova.Observability.Hosting;
 
 public static class HostingExtensions
 {
-    public static IServiceCollection AddNovaObservability(
-        this IServiceCollection services,
-        Action<NovaOpenTelemetryOptions> configure)
+    private static IServiceCollection AddNovaObservability(
+    IServiceCollection services,
+    NovaOpenTelemetryOptions options)
     {
-        if (services == null)
-            throw new ArgumentNullException(nameof(services));
-
-        if (configure == null)
-            throw new ArgumentNullException(nameof(configure));
-
-        var options =
-            new NovaOpenTelemetryOptions();
-
-        configure(options);
-
         if (!options.Enabled)
         {
             services.TryAddSingleton(
@@ -64,19 +54,21 @@ public static class HostingExtensions
             return services;
         }
 
-        services.TryAddSingleton(options);
+        services.TryAddSingleton(
+            options);
 
-        services.TryAddSingleton(new NovaInterceptionOptions
-        {
-            Enabled = true,
+        services.TryAddSingleton(
+            new NovaInterceptionOptions
+            {
+                Enabled = true,
 
-            EnableLogScopes = true,
+                EnableLogScopes = true,
 
-            LogFailures = true,
+                LogFailures = true,
 
-            DiagnosticHandler =
-                options.DiagnosticHandler
-        });
+                DiagnosticHandler =
+                    options.DiagnosticHandler
+            });
 
         services.TryAddSingleton<
             IProxyGenerator,
@@ -96,29 +88,69 @@ public static class HostingExtensions
         openTelemetry.WithTracing(
             tracing =>
             {
-                NovaOpenTelemetryPipeline.ConfigureTracing(
-                    tracing,
-                    options);
+                NovaOpenTelemetryPipeline
+                    .ConfigureTracing(
+                        tracing,
+                        options);
             });
 
         openTelemetry.WithMetrics(
             metrics =>
             {
-                NovaOpenTelemetryPipeline.ConfigureMetrics(
-                    metrics,
-                    options);
+                NovaOpenTelemetryPipeline
+                    .ConfigureMetrics(
+                        metrics,
+                        options);
             });
 
         openTelemetry.WithLogging(
             configureBuilder: null,
-            configureOptions: logging =>
-            {
-                NovaOpenTelemetryPipeline.ConfigureLogging(
-                    logging,
-                    options);
-            });
+            configureOptions:
+                logging =>
+                {
+                    NovaOpenTelemetryPipeline
+                        .ConfigureLogging(
+                            logging,
+                            options);
+                });
 
         return services;
+    }
+    public static IServiceCollection AddNovaObservability(
+    this IServiceCollection services,
+    IConfiguration configuration,
+    string sectionName = "Nova:Observability",
+    Action<NovaOpenTelemetryOptions>? configure = null)
+    {
+        if (services == null)
+            throw new ArgumentNullException(
+                nameof(services));
+
+        if (configuration == null)
+            throw new ArgumentNullException(
+                nameof(configuration));
+
+        if (string.IsNullOrWhiteSpace(
+                sectionName))
+        {
+            throw new ArgumentException(
+                "Section name cannot be empty.",
+                nameof(sectionName));
+        }
+
+        var options =
+            new NovaOpenTelemetryOptions();
+
+        configuration
+            .GetSection(sectionName)
+            .Bind(options);
+
+        configure?.Invoke(
+            options);
+
+        return AddNovaObservability(
+            services,
+            options);
     }
 
     private static void ReportDiagnosticSafely(
