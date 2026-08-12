@@ -1,21 +1,17 @@
 services:
-
   lgtm:
     image: grafana/otel-lgtm:latest
     container_name: nova-observability-lgtm
 
     ports:
-      # Grafana UI
       - "3000:3000"
-
-      # OTLP gRPC
       - "4317:4317"
-
-      # OTLP HTTP/protobuf
       - "4318:4318"
 
     volumes:
       - nova-lgtm-data:/data
+      - ./provisioning/dashboards/nova.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/nova.yaml:ro
+      - ./dashboards:/otel-lgtm/grafana/conf/provisioning/dashboards/nova:ro
 
     restart: unless-stopped
 
